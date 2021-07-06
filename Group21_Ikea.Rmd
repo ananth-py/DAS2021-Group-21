@@ -1,0 +1,27 @@
+---
+title: "Group21_Ikea"
+author: "Group21"
+date: "06/07/2021"
+output: pdf_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Ikea data analysis
+
+
+```{r library}
+library(tidyverse)
+library(jtools)
+```
+##Introduction
+
+
+##Analysis
+
+```{r glm}
+ikea.sa<- read.csv("dataset21.csv")
+
+```
