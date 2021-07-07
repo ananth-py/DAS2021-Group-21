@@ -18,10 +18,14 @@ library(jtools)
 ```
 ##Introduction
 
+##Exploratory Analysis
 
-##Analysis
+
+##Formal Data Analysis
 
 ```{r glm}
 ikea.sa<- read.csv("dataset21.csv")
 
 ```
+
+##Conclusions and Future Works
