@@ -14,18 +14,46 @@ knitr::opts_chunk$set(echo = TRUE)
 
 ```{r library}
 library(tidyverse)
+library(tinytex)
+library(moderndive)
+library(gapminder)
+library(sjPlot)
+library(stats)
 library(jtools)
+library(ggplot2)
+library(dplyr)
+library(moderndive)
+library(ISLR)
+library(skimr)
+library(plotly)
+library(tidyr)
+library(jtools)
+library(tidyverse)
+library(kableExtra)
+library(gridExtra)
+library(corrplot)
+library(car)
+library(reshape2)
+library(knitr)
+library(fmsb)
+library(maps)
+library(mapproj)
+library(bibtex)
 ```
 ##Introduction
+Data set provided is from Ikea (Saudi Arabia), It is of interest to determine which properties of a furniture determine where the price is greater than 1000 riyals.
 
 ##Exploratory Analysis
 
+```{r exploratory}
+ikea.sa<- read.csv("dataset21.csv")
+summary(ikea.sa[3:9]) %>%
+kable(caption = '\\label{tab:summaries} Summary statistics for observations with chosen variables.') %>%
+  kable_styling(latex_options = "hold_position")
+```
 
 ##Formal Data Analysis
 
-```{r glm}
-ikea.sa<- read.csv("dataset21.csv")
 
-```
 
 ##Conclusions and Future Works
