@@ -2,11 +2,18 @@
 title: "Group21_Ikea"
 author: "Group21"
 date: "06/07/2021"
-output: pdf_document
+output:
+  pdf_document:
+    latex_engine: pdflatex
+    number_sections: yes
+  html_document:
+    df_print: paged
+  word_document: default
+fig_caption: yes
 ---
 
 ```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE)
+knitr::opts_chunk$set(eval = TRUE, warning = FALSE, message = FALSE, comment = NA)
 ```
 
 ## Ikea data analysis
@@ -15,30 +22,12 @@ knitr::opts_chunk$set(echo = TRUE)
 ```{r library}
 library(tidyverse)
 library(tinytex)
-library(moderndive)
-library(gapminder)
 library(sjPlot)
-library(stats)
 library(jtools)
-library(ggplot2)
-library(dplyr)
-library(moderndive)
-library(ISLR)
-library(skimr)
-library(plotly)
-library(tidyr)
-library(jtools)
-library(tidyverse)
-library(kableExtra)
-library(gridExtra)
-library(corrplot)
 library(car)
 library(reshape2)
-library(knitr)
-library(fmsb)
-library(maps)
-library(mapproj)
-library(bibtex)
+library(kableExtra)
+
 ```
 ##Introduction
 Data set provided is from Ikea (Saudi Arabia), It is of interest to determine which properties of a furniture determine where the price is greater than 1000 riyals.
@@ -57,3 +46,6 @@ kable(caption = '\\label{tab:summaries} Summary statistics for observations with
 
 
 ##Conclusions and Future Works
+
+##Reference
+
