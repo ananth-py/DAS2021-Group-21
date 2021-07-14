@@ -34,9 +34,12 @@ library(mice)
 
 ```{r glm}
 ikea.sa<- read.csv("dataset21.csv")
+ikea.sa<-mutate(ikea.sa,price_level=if_else(price>1000,1,0))
 imp<-mice(ikea.sa[,7:9],seed=1234)
-ikea<-complete(imp)
 stripplot(imp,pch=19,cex=1.2,alpha=.3)
+imp<-mice(ikea.sa[,3:10],seed=1234)
+ikea<-complete(imp)
+
 ```
 
 ##Introduction
@@ -53,29 +56,11 @@ kable(caption = '\\label{tab:summaries} Summary statistics for observations with
   kable_styling(latex_options = "hold_position")
 #add price level>1000 :1
 ikea.sa<-mutate(ikea.sa,price_level=if_else(price>1000,1,0))
-ikea<-ikea.sa %>% mutate_all(~ replace_na(., 1))
 
-#ikea<-ikea.sa %>% mutate_all(~ replace_na(., median(., na.rm = TRUE)))
-#ikea$sellable_online<-ikea.sa$sellable_online
-#<-ikea %>% group_by(width) %>% mutate_all(~ replace_na(., mean(., na.rm = TRUE)))
-#ikea<-ikea.sa %>% group_by(height) %>% mutate_all(~ replace_na(., mean(., na.rm = TRUE)))
+fit<-with(imp,glm(price_level~sellable_online+other_colors+depth+height+width),family=logit)
+fit1<-pool(fit)
+summary(fit1)
 
-
-#GLM ?
-
-glm.model.na <- glm( price_level~ sellable_online+other_colors+depth+height+width, data = ikea.sa, family = binomial(link = "logit"))
-
-#glm.model.mean.all <- glm( price_level~ sellable_online+other_colors+depth+height+width, data = ikea, family = binomial(link = "logit"))
-
-
-##glm.model <- glm( price_level~ other_colors+depth+height+width, data = ikea, family = binomial(link = "Identity"))
-
-#x<-unique
-#get_regression_table(glm.model.all)
-
-
-glm.model.na%>%
-  summary()
 
 
 
@@ -83,8 +68,8 @@ glm.model.na%>%
 
 ```{r }
 
-#glm.model.mean.all%>%
-  summary()
+glm.model.mean.all%>%
+summary()
 ```
 We have multiple NA values, But  Multiple imputation is out of scope for this analysis and therefore ignored.
 
