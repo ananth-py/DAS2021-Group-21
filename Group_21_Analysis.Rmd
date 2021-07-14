@@ -28,18 +28,56 @@ library(car)
 library(reshape2)
 library(kableExtra)
 
+
 ```
 ##Introduction
 Data set provided is from Ikea (Saudi Arabia), It is of interest to determine which properties of a furniture determine where the price is greater than 1000 riyals.
 
 ##Exploratory Analysis
+#use category for graphical visualization
 
 ```{r exploratory}
-ikea.sa<- read.csv("dataset21.csv")
+options(digits = 4)
+ikea.sa<- read_csv("dataset21.csv", na = "NA")
 summary(ikea.sa[3:9]) %>%
 kable(caption = '\\label{tab:summaries} Summary statistics for observations with chosen variables.') %>%
   kable_styling(latex_options = "hold_position")
+#add price level>1000 :1
+ikea.sa<-mutate(ikea.sa,price_level=if_else(price>1000,1,0))
+ikea<-ikea.sa %>% mutate_all(~ replace_na(., 1))
+
+#ikea<-ikea.sa %>% mutate_all(~ replace_na(., median(., na.rm = TRUE)))
+#ikea$sellable_online<-ikea.sa$sellable_online
+#<-ikea %>% group_by(width) %>% mutate_all(~ replace_na(., mean(., na.rm = TRUE)))
+#ikea<-ikea.sa %>% group_by(height) %>% mutate_all(~ replace_na(., mean(., na.rm = TRUE)))
+
+
+#GLM ?
+
+glm.model.na <- glm( price_level~ sellable_online+other_colors+depth+height+width, data = ikea.sa, family = binomial(link = "logit"))
+
+#glm.model.mean.all <- glm( price_level~ sellable_online+other_colors+depth+height+width, data = ikea, family = binomial(link = "logit"))
+
+
+##glm.model <- glm( price_level~ other_colors+depth+height+width, data = ikea, family = binomial(link = "Identity"))
+
+#x<-unique
+#get_regression_table(glm.model.all)
+
+
+glm.model.na%>%
+  summary()
+
+
+
 ```
+
+```{r }
+
+#glm.model.mean.all%>%
+  summary()
+```
+We have multiple NA values, But  Multiple imputation is out of scope for this analysis and therefore ignored.
 
 ##Formal Data Analysis
 
