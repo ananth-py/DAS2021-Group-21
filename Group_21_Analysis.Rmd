@@ -27,9 +27,18 @@ library(jtools)
 library(car)
 library(reshape2)
 library(kableExtra)
-
+library(mice)
 
 ```
+##Analysis
+
+```{r glm}
+ikea.sa<- read.csv("dataset21.csv")
+imp<-mice(ikea.sa[,7:9],seed=1234)
+ikea<-complete(imp)
+stripplot(imp,pch=19,cex=1.2,alpha=.3)
+```
+
 ##Introduction
 Data set provided is from Ikea (Saudi Arabia), It is of interest to determine which properties of a furniture determine where the price is greater than 1000 riyals.
 
