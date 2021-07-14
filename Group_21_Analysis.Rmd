@@ -30,51 +30,47 @@ library(kableExtra)
 library(mice)
 
 ```
-##Analysis
 
-```{r glm}
-ikea.sa<- read.csv("dataset21.csv")
-ikea.sa<-mutate(ikea.sa,price_level=if_else(price>1000,1,0))
-imp<-mice(ikea.sa[,7:9],seed=1234)
-stripplot(imp,pch=19,cex=1.2,alpha=.3)
-imp<-mice(ikea.sa[,3:10],seed=1234)
-ikea<-complete(imp)
-
-```
 
 ##Introduction
 Data set provided is from Ikea (Saudi Arabia), It is of interest to determine which properties of a furniture determine where the price is greater than 1000 riyals.
 
 ##Exploratory Analysis
 #use category for graphical visualization
-
 ```{r exploratory}
-options(digits = 4)
-ikea.sa<- read_csv("dataset21.csv", na = "NA")
-summary(ikea.sa[3:9]) %>%
+ikea.sa<- read.csv("dataset21.csv")
+ikea.sa<-mutate(ikea.sa,price_level=if_else(price>1000,1,0))
+
+summary(ikea.sa[3:10]) %>%
 kable(caption = '\\label{tab:summaries} Summary statistics for observations with chosen variables.') %>%
   kable_styling(latex_options = "hold_position")
+
+```
+
+```{r glm }
+#interpolation for missing values
+imp<-mice(ikea.sa[,7:9],seed=1234)
+stripplot(imp,pch=19,cex=1.2,alpha=.3)
+imp<-mice(ikea.sa[,3:10],seed=1234)
+ikea<-complete(imp)
+
+
 #add price level>1000 :1
 ikea.sa<-mutate(ikea.sa,price_level=if_else(price>1000,1,0))
 
-fit<-with(imp,glm(price_level~sellable_online+other_colors+depth+height+width),family=logit)
+fit<-with(imp,glm(price_level~sellable_online+other_colors+depth+height+width),family=binomial(link="logit"))
 fit1<-pool(fit)
-summary(fit1)
+summary(fit1,conf.int = TRUE,level=0.95)
 
+#reject insignificant explanatory variables. fit into new model
 
-
-
-```
-
-```{r }
-
-glm.model.mean.all%>%
-summary()
-```
-We have multiple NA values, But  Multiple imputation is out of scope for this analysis and therefore ignored.
+fit<-with(imp,glm(price_level~depth+height+width),family=binomial(link="logit"))
+final<-pool(fit)
+summary(final,conf.int = TRUE,level=0.95)
+```g37 tx
+We have multiple NA values, we use  Multiple imputation to add meaningful values to the dataset. this allows us to retain half the dataset and perform analysis on it more effectively.
 
 ##Formal Data Analysis
-
 
 
 ##Conclusions and Future Works
