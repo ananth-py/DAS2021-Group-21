@@ -46,7 +46,7 @@ We first took 1000 yuan as a dividing point according to the problem, and added 
 
 # Visualization of the data {#sec:VIS}
 ```{r histogram,echo = FALSE, eval = TRUE}
-Encoding(ikea$category)<-"UTF-8"
+Encoding(ikea$category)<-"ASCII"
 ggplot(ikea, aes(x = factor(category), fill = factor(price_level))) +
 geom_bar(stat="count", position = "stack")+
   ylab("Number of Furnitures")+
