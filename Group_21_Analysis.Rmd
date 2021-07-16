@@ -81,8 +81,7 @@ kable(caption = '\\label{tab:summaries} The coefficient table of the first model
 ```
 We use price_level as the response variable. Because it is a binary variable, so we can use a logistic regression model for the probability of whether the price is greater than 1000. Through the above table, we found that the P values of the two categorical variables(sellable_online and other_colors) are both greater than 0.05 and their confidence interval contains 0, so it means that these two items are not significant in this model, and we need to eliminate these two variables. Next, we use the remaining variables to perform a new modeling.
 
-$$log({{1-\widehat{\mbox{p}}_{\mbox{i}}}\over\widehat{\mbox{p}}_{\mbox{i}}} )= \widehat{\alpha} +
-{\widehat\beta}*{\mbox{depth}}_{\mbox{i}} +\widehat{\gamma}*{\mbox{height}}_{\mbox{i}}+\widehat{\delta}*{\mbox{width}}_{\mbox{i}}$$
+$$log({\widehat{\mbox{p}}_{\mbox{i}}\over{1-\widehat{\mbox{p}}_{\mbox{i}}}} )= \widehat{\alpha}+{\widehat\beta}*{\mbox{depth}}_{\mbox{i}}+\widehat{\gamma}*{\mbox{height}}_{\mbox{i}}+\widehat{\delta}*{\mbox{width}}_{\mbox{i}}$$
 
 where
 
@@ -106,13 +105,10 @@ kable(caption = '\\label{tab:summaries} The coefficient table of the final model
   kable_styling(latex_options = "hold_position")
 ```
 According to the coefficients in the above table, we can get the final model as follows:
-$$log({{1-\widehat{\mbox{p}}_{\mbox{i}}}\over\widehat{\mbox{p}}_{\mbox{i}}} )= -0.4065 +
-0.0048*{\mbox{depth}}_{\mbox{i}} +0.0016*{\mbox{height}}_{\mbox{i}}+0.0028*{\mbox{width}}_{\mbox{i}}$$
+$$log({\widehat{\mbox{p}}_{\mbox{i}}\over{1-\widehat{\mbox{p}}_{\mbox{i}}}} )=-0.4065+0.0048*{\mbox{depth}}_{\mbox{i}}+0.0016*{\mbox{height}}_{\mbox{i}}+0.0028*{\mbox{width}}_{\mbox{i}}$$
 
 This is equivalent to:
-$$\widehat{\mbox{p}}_{\mbox{i}}={exp( -0.4065 +
-0.0048*{\mbox{depth}}_{\mbox{i}} +0.0016*{\mbox{height}}_{\mbox{i}}+0.0028*{\mbox{width}}_{\mbox{i}})\over1+exp( -0.4065 +
-0.0048*{\mbox{depth}}_{\mbox{i}} +0.0016*{\mbox{height}}_{\mbox{i}}+0.0028*{\mbox{width}}_{\mbox{i}})}$$
+$$\widehat{\mbox{p}}_{\mbox{i}}={exp(-0.4065+0.0048*{\mbox{depth}}_{\mbox{i}} +0.0016*{\mbox{height}}_{\mbox{i}}+0.0028*{\mbox{width}}_{\mbox{i}})\over1+exp(-0.4065+0.0048*{\mbox{depth}}_{\mbox{i}}+0.0016*{\mbox{height}}_{\mbox{i}}+0.0028*{\mbox{width}}_{\mbox{i}})}$$
 
 Lily(write something to explain this formula)
 
