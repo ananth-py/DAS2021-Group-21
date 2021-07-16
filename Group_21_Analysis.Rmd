@@ -50,7 +50,7 @@ We first took 1000 as a dividing point according to the problem, and added a new
 Encoding(ikea.sa$category)<-"ASCII"
 ggplot(ikea.sa, aes(x = factor(category), fill = factor(price_level))) +
 geom_bar(stat="count", position = "stack")+
-  ylab("Number of Furnitures")+
+  ylab("Number of furnitures")+xlab("Category")+scale_x_discrete(labels = abbreviate)+
 theme(legend.position = "right") +
     theme(legend.direction = "vertical") +
     theme(axis.text.x = element_text(angle = 90))
