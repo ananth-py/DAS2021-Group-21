@@ -45,7 +45,15 @@ kable(caption = '\\label{tab:summaries} Summary statistics for observations with
 We first took 1000 yuan as a dividing point according to the problem, and added a new list of binary variables named price_level. Furniture with a price greater than 1000 takes 1, otherwise it takes 0. Then we performed descriptive statistical analysis based on these selected variables....(Then write some analysis)
 
 # Visualization of the data {#sec:VIS}
-
+```{r histogram,echo = FALSE, eval = TRUE}
+Encoding(ikea$category)<-"UTF-8"
+ggplot(ikea, aes(x = factor(category), fill = factor(price_level))) +
+geom_bar(stat="count", position = "stack")+
+  ylab("Number of Furnitures")+
+theme(legend.position = "right") +
+    theme(legend.direction = "vertical") +
+    theme(axis.text.x = element_text(angle = 90))
+```
 # Formal Data Analysis {#sec:FDA}
 ```{r aggrplot,echo = FALSE, eval = TRUE,out.width = '70%', fig.pos = 'H', fig.align = "center", fig.cap = "\\label{fig:aggr} Missing original data."}
 aggr(ikea.sa)
