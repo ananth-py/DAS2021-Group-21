@@ -47,6 +47,7 @@ We first took 1000 as a dividing point according to the problem, and added a new
 
 # Visualization of the data {#sec:VIS}
 ```{r histogram,echo = FALSE, eval = TRUE}
+Encoding(ikea.sa$category)<-"ASCII"
 ggplot(ikea.sa, aes(x = factor(category), fill = factor(price_level))) +
 geom_bar(stat="count", position = "stack")+
   ylab("Number of Furnitures")+
