@@ -1,5 +1,5 @@
 ---
-title: "Group21_Ikea"
+title: "Analysis of The IKEA Furniture Price"
 author: 'Group 21-Ananth Padakannaya,Nivedita Patil,Li Wang,Wanqing Yang,Boyao Ma'
 date: "06/07/2021"
 output:
@@ -26,6 +26,7 @@ library(reshape2)
 library(kableExtra)
 library(mice)
 library(VIM)
+library(latexpdf)
 ```
 
 ```{r data, echo = FALSE, eval = TRUE}
@@ -42,18 +43,18 @@ summary(ikea.sa[4:10]) %>%
 kable(caption = '\\label{tab:summaries} Summary statistics for observations with chosen variables.') %>%
   kable_styling(latex_options = "hold_position", full_width = F, font_size = 8)
 ```
-We first took 1000 yuan as a dividing point according to the problem, and added a new list of binary variables named price_level. Furniture with a price greater than 1000 takes 1, otherwise it takes 0. Then we performed descriptive statistical analysis based on these selected variables....(Then write some analysis)
+We first took 1000 as a dividing point according to the problem, and added a new list of binary variables named price_level. Furniture with a price greater than 1000 takes 1, otherwise it takes 0. Then we performed descriptive statistical analysis based on these selected variables....(Then write some analysis)
 
 # Visualization of the data {#sec:VIS}
 ```{r histogram,echo = FALSE, eval = TRUE}
-Encoding(ikea$category)<-"ASCII"
-ggplot(ikea, aes(x = factor(category), fill = factor(price_level))) +
+ggplot(ikea.sa, aes(x = factor(category), fill = factor(price_level))) +
 geom_bar(stat="count", position = "stack")+
   ylab("Number of Furnitures")+
 theme(legend.position = "right") +
     theme(legend.direction = "vertical") +
     theme(axis.text.x = element_text(angle = 90))
 ```
+
 # Formal Data Analysis {#sec:FDA}
 ```{r aggrplot,echo = FALSE, eval = TRUE,out.width = '70%', fig.pos = 'H', fig.align = "center", fig.cap = "\\label{fig:aggr} Missing original data."}
 aggr(ikea.sa)
@@ -77,8 +78,24 @@ summary(fit1,conf.int = TRUE,level=0.95)%>%
 kable(caption = '\\label{tab:summaries} The coefficient table of the first model.') %>%
   kable_styling(latex_options = "hold_position")
 ```
-We use price_level as the response variable. Because it is a binary variable, we use the logit regression model to complete the analysis. Through the above table, we found that the P values of the two categorical variables(sellable_online and other_colors) are both greater than 0.05 and their confidence interval contains 0, so it means that these two items are not significant in this model, and we need to eliminate these two variables. Next, we use the remaining variables to perform a new modeling.
+We use price_level as the response variable. Because it is a binary variable, so we can use a logistic regression model for the probability of whether the price is greater than 1000. Through the above table, we found that the P values of the two categorical variables(sellable_online and other_colors) are both greater than 0.05 and their confidence interval contains 0, so it means that these two items are not significant in this model, and we need to eliminate these two variables. Next, we use the remaining variables to perform a new modeling.
 
+$$log({{1-\widehat{\mbox{p}}_{\mbox{i}}}\over\widehat{\mbox{p}}_{\mbox{i}}} )= \widehat{\alpha} +
+{\widehat\beta}*{\mbox{depth}}_{\mbox{i}} +\widehat{\gamma}*{\mbox{height}}_{\mbox{i}}+\widehat{\delta}*{\mbox{width}}_{\mbox{i}}$$
+
+where
+
+• the $\widehat{\mbox{p}}_{\mbox{i}}(P({\mbox{price_level}}_{\mbox{i}}=1))$:  the probability of whether the price is greater than 1000 for the $i\mbox{th}$ furniture.
+
+• the $\widehat{\alpha}$: the intercept of the regression line.
+
+• the $\widehat{\beta}$: the coefficient for the first explanatory variable ${\mbox{depth}}$.
+
+• the $\widehat{\gamma}$: the coefficient for the second explanatory variable ${\mbox{height}}$.
+
+• the $\widehat{\delta}$: the coefficient for the second explanatory variable ${\mbox{width}}$.
+
+When this model is fitted to the data, the following estimates of ${\alpha}$  (intercept) and ${\beta}$,${\gamma}$ and ${\delta}$ are returned:
 ```{r,echo = FALSE, eval = TRUE}
 #reject insignificant explanatory variables and fit into new model
 fit2<-with(imp,glm(price_level~depth+height+width),family=binomial(link="logit"))
@@ -87,6 +104,17 @@ summary(final,conf.int = TRUE,level=0.95)%>%
 kable(caption = '\\label{tab:summaries} The coefficient table of the final model.') %>%
   kable_styling(latex_options = "hold_position")
 ```
+According to the coefficients in the above table, we can get the final model as follows:
+$$log({{1-\widehat{\mbox{p}}_{\mbox{i}}}\over\widehat{\mbox{p}}_{\mbox{i}}} )= -0.4065 +
+0.0048*{\mbox{depth}}_{\mbox{i}} +0.0016*{\mbox{height}}_{\mbox{i}}+0.0028*{\mbox{width}}_{\mbox{i}}$$
+
+This is equivalent to:
+$$\widehat{\mbox{p}}_{\mbox{i}}={exp( -0.4065 +
+0.0048*{\mbox{depth}}_{\mbox{i}} +0.0016*{\mbox{height}}_{\mbox{i}}+0.0028*{\mbox{width}}_{\mbox{i}})\over1+exp( -0.4065 +
+0.0048*{\mbox{depth}}_{\mbox{i}} +0.0016*{\mbox{height}}_{\mbox{i}}+0.0028*{\mbox{width}}_{\mbox{i}})}$$
+
+Lily(write something to explain this formula)
+
 
 # Conclusions and Future Works
 # References
