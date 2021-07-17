@@ -85,7 +85,7 @@ $$log({\widehat{\mbox{p}}_{\mbox{i}}\over{1-\widehat{\mbox{p}}_{\mbox{i}}}} )= \
 
 where
 
-• the $\widehat{\mbox{p}}_{\mbox{i}}(P({\mbox{price_level}}_{\mbox{i}}=1))$:  the probability of whether the price is greater than 1000 for the $i\mbox{th}$ furniture.
+• the $\widehat{\mbox{p}}_{\mbox{i}}$:  the probability of whether the price is greater than 1000 for the $i\mbox{th}$ furniture.
 
 • the $\widehat{\alpha}$: the intercept of the regression line.
 
