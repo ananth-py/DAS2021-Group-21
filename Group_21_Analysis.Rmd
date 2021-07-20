@@ -106,7 +106,7 @@ According to the coefficients in the above table, we can get the final model as 
 $$log({\widehat{\mbox{p}}_{\mbox{i}}\over{1-\widehat{\mbox{p}}_{\mbox{i}}}} )=-7.3421+0.0469*{\mbox{depth}}_{\mbox{i}}+0.0122*{\mbox{height}}_{\mbox{i}}+0.0229*{\mbox{width}}_{\mbox{i}}$$
 
 This is equivalent to:
-$$\widehat{\mbox{p}}_{\mbox{i}}=exp(-7.3421+0.0469*{\mbox{depth}}_{\mbox{i}}+0.0122*{\mbox{height}}_{\mbox{i}}+0.0229*{\mbox{width}}_{\mbox{i}})\over1+exp(-7.3421+0.0469*{\mbox{depth}}_{\mbox{i}}+0.0122*{\mbox{height}}_{\mbox{i}})$$
+$$\widehat{\mbox{p}}_{\mbox{i}}={exp(-7.3421+0.0469*{\mbox{depth}}_{\mbox{i}}+0.0122*{\mbox{height}}_{\mbox{i}}+0.0229*{\mbox{width}}_{\mbox{i}})\over1+exp(-7.3421+0.0469*{\mbox{depth}}_{\mbox{i}}+0.0122*{\mbox{height}}_{\mbox{i}}+0.0229*{\mbox{width}}_{\mbox{i}})}$$
 
 Lily(write something to explain this formula)
 
