@@ -26,7 +26,11 @@ library(reshape2)
 library(kableExtra)
 library(mice)
 library(VIM)
-library(latexpdf)
+library(ROCR)
+library(moderndive)
+library(gapminder)
+library(stats)
+library(gridExtra)
 ```
 
 ```{r data, echo = FALSE, eval = TRUE}
