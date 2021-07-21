@@ -3,11 +3,11 @@ title: "Analysis of The IKEA Furniture Price"
 author: 'Group 21-Ananth Padakannaya,Nivedita Patil,Li Wang,Wanqing Yang,Boyao Ma'
 date: "06/07/2021"
 output:
+  html_document:
+    df_print: paged
   pdf_document:
     latex_engine: pdflatex
     number_sections: yes
-  html_document:
-    df_print: paged
   word_document: default
 fig_caption: yes
 always_allow_html: true
