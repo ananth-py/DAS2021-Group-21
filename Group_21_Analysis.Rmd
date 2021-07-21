@@ -10,6 +10,7 @@ output:
     df_print: paged
   word_document: default
 fig_caption: yes
+always_allow_html: true
 ---
 
 ```{r setup, include=FALSE}
@@ -59,7 +60,7 @@ theme(legend.position = "right") +
     theme(legend.direction = "vertical") +
     theme(axis.text.x = element_text(angle = 90))
 ```
-```{r exploratory echo = FALSE, eval = TRUE}
+```{r exploratory ,echo = FALSE, eval = TRUE}
 library(plotly)
 
 fig <- plot_ly(ikea.sa, x = ~width, y = ~height, text = ~category, type = 'scatter', mode = 'markers',color=~category,
