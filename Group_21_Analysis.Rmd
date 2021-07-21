@@ -169,7 +169,7 @@ roc.data <- data.frame(fpr=unlist(perf@x.values),
 ggplot(roc.data, aes(x=fpr, ymin=0, ymax=tpr)) +
     geom_ribbon(alpha=0.2) +
     geom_line(aes(y=tpr)) + 
-    ggtitle(paste0("ROC Curve w/ AUC=", auc))​
+    ggtitle(paste0("ROC Curve w/ AUC=", auc))
 
 ```
 explain ROC and AUC
