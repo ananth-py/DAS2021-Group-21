@@ -59,7 +59,16 @@ theme(legend.position = "right") +
     theme(legend.direction = "vertical") +
     theme(axis.text.x = element_text(angle = 90))
 ```
+```{r exploratory echo = FALSE, eval = TRUE}
+library(plotly)
 
+fig <- plot_ly(ikea.sa, x = ~width, y = ~height, text = ~category, type = 'scatter', mode = 'markers',color=~category,
+        marker = list(size = ~depth/10, opacity = 0.5))
+fig <- fig %>% layout(title = 'Distribution of Furniture Dimensions',
+         xaxis = list(showgrid = FALSE),
+         yaxis = list(showgrid = FALSE))
+fig
+```
 # Formal Data Analysis {#sec:FDA}
 ```{r aggrplot,echo = FALSE, eval = TRUE,out.width = '70%', fig.pos = 'H', fig.align = "center", fig.cap = "\\label{fig:aggr} Missing original data."}
 aggr(ikea.sa)
@@ -73,6 +82,7 @@ stripplot(imp,pch=19,cex=1.2,alpha=.3)
 imp<-mice(ikea.sa[,3:10],seed=1234)
 ikea<-complete(imp,action = 4)
 ```
+
 According to the picture, we can view the data interpolation. The blue point is the original data, and the red point is the interpolation data. We can see that the two color points are relatively overlapped, indicating that the interpolation is very good.Then we chose the fourth database of multiple imputation for generalized linear model analysis.
 
 ```{r glm,echo = FALSE, eval = TRUE}
@@ -154,6 +164,8 @@ g3<-ggplot(data = ikea, aes(x = width, y = probs.price)) +
   labs(x = "width", y = "Probability of price over 1000")
 grid.arrange(g1,g2,g3,ncol = 2)
 ```
+
+
 lily...
 
 # Goodness of fit
