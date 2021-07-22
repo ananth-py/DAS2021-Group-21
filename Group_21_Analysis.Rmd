@@ -39,7 +39,8 @@ ikea.sa <- read_csv("dataset21.csv")
 ```
 
 # Introduction{#sec:Intro}
-Data set provided is from Ikea (Saudi Arabia), It is of interest to determine which properties of a furniture determine where the price is greater than 1000 riyals.
+The IKEA store, known for its stylish design and affordable price for young people, has become one of the most popular and recognized furniture retailers in the global marketplace. The company has expanded its global reach very quickly. From Wikipedia, we know that in the early, the first IKEA store in Saudi Arabia opened in 1983 and three stores are opening in this region now. In this study, it is of interest to explore which properties of furniture influence whether they cost more than 1000 Saudi Riyals. We use data from IKEA (Saudi Arabia), including 500 observations and the variables of category, price, sellable_online, other_colors, depth, height and width. In particular, this report further explores the impact level of depth, height and width on the price.
+
 
 # Exploratory Data Analysis {#sec:EDA}
 ```{r exploratory,echo = FALSE, eval = TRUE}
@@ -48,7 +49,9 @@ summary(ikea.sa[4:10]) %>%
 kable(caption = '\\label{tab:summaries} Summary statistics for observations with chosen variables.') %>%
   kable_styling(latex_options = "hold_position", full_width = F, font_size = 8)
 ```
-We first took 1000 as a dividing point according to the problem, and added a new list of binary variables named price_level. Furniture with a price greater than 1000 takes 1, otherwise it takes 0. Then we performed descriptive statistical analysis based on these selected variables....(Then write some analysis)
+We first took 1000 as a dividing point according to the problem, and added a new list of binary variables named price_level. Furniture with a price greater than 1000 takes 1, otherwise it takes 0. Then we performed descriptive statistical analysis based on these selected variables of 500 observations. 
+
+Table 1 shows that the price of the furniture ranges from 3.0 to 8551.0, with the middle 50% falling between 168.8 and 1245.0 and an average price of 991.1. We can also observe that the middle 50% of depth is between 37.0 and 60.0, with depth of 53.3 on average. Similarly, the middle 50% of height lies between 68.0 and 123.8, with an average value of 102.3. It also shows the mean value of width is 101.1 and the middle 50% falls between 56.0 and 134.2. Besides, we may look at the sellable_online variable is a logical variable, with 499 TRUE values demonstrating that these quantities of items are available to purchase online and 1 FALSE value demonstrating that 1 item is unavailable. In terms of other_colors, it shows that this is a character variable.
 
 # Visualization of the data {#sec:VIS}
 ```{r histogram,echo = FALSE, eval = TRUE}
@@ -70,11 +73,13 @@ fig <- fig %>% layout(title = 'Distribution of Furniture Dimensions',
          yaxis = list(showgrid = FALSE))
 fig
 ```
+Figure 1 shows the number of furniture based on categories with a price_level 1 (greater than 1000) and 0 (less than 1000). It is obvious that the number of furniture whose price is greater than 1000 is far less than that of furniture whose price is less than 1000 and the prices of furniture in certain categories are all under 1000, such as Cffr, Cod&du, Ch’f and Nrsf. In addition, the largest difference is found in the quantity of B&su costing more than 1000 and less than 1000.
+
 # Formal Data Analysis {#sec:FDA}
 ```{r aggrplot,echo = FALSE, eval = TRUE,out.width = '70%', fig.pos = 'H', fig.align = "center", fig.cap = "\\label{fig:aggr} Missing original data."}
 aggr(ikea.sa)
 ```
-Through the above figure, we found that there are many missing values and the missing data is mainly concentrated in three explanatory variables, namely depth, length and width. And the three horizontal red squares indicate that these three data are missing at the same time. If we ignore or delete these missing data directly, it will have a great impact on the analysis of the data. So we have to use multiple imputation to fill in missing data.
+Through the above figure, we found anomalies that there are many missing values and the missing data is mainly concentrated in three explanatory variables, namely depth, length and width. And the three horizontal red squares indicate that these three data are missing at the same time. If we ignore or delete these missing data directly, it will have a great impact on the analysis of the data. So we have to use multiple imputation to fill in missing data.
 
 ```{r stripplot,echo = FALSE, eval = TRUE,out.width = '70%', fig.pos = 'H', fig.align = "center", fig.cap = "\\label{fig:strip} Data situation of multiple imputation method."}
 #interpolation for missing values
@@ -119,15 +124,14 @@ $$log({\widehat{\mbox{p}}_{\mbox{i}}\over{1-\widehat{\mbox{p}}_{\mbox{i}}}} )=-7
 This is equivalent to:
 $$\widehat{\mbox{p}}_{\mbox{i}}={exp(-7.3421+0.0469*{\mbox{depth}}_{\mbox{i}}+0.0122*{\mbox{height}}_{\mbox{i}}+0.0229*{\mbox{width}}_{\mbox{i}})\over1+exp(-7.3421+0.0469*{\mbox{depth}}_{\mbox{i}}+0.0122*{\mbox{height}}_{\mbox{i}}+0.0229*{\mbox{width}}_{\mbox{i}})}$$
 
-Lily(write something to explain this formula)
+The log-odds of the price of a furniture being greater than 1000 increase by 0.05 for every 1 unit increase in depth when keeping the height and width constant. Similarly, the log-odds increase by 0.01 for every 1 unit increase in height and increases by 0.02 for every unit increase in width.
 
 ```{r,echo = FALSE, eval = TRUE}
 confint(final) %>%
   kable(caption = '\\label{tab:CI} The confidence interval of variables.') %>%
   kable_styling(latex_options = "hold_position")
 ```
-(write something to explain this CI)
-
+Table 2 shows the 95% confidence interval for these log-odds, with intercept being of (-8.71, -6.61), depth being of (0.03, 0.06), height being of (0.007, 0.017) and width being of (0.02, 0.03).
 
 ```{r,echo = FALSE, eval = TRUE}
 final %>%
@@ -136,7 +140,7 @@ final %>%
   kable(caption = '\\label{tab:summaries} Odds scale.') %>%
   kable_styling(latex_options = "hold_position")
 ```
-On the odds scale, the intercept value (0.00006477) gives the probability that the price is greater than 1000 when depth= 0, width=0 and height=0. This is obviously not the feasible range of depth, width and height, so why this value is very close to zero. For depth, we There is a probability of 1.05, which means that for each increase in depth by 1 unit, the probability that the furniture price is greater than 1000 increases by 1.06 times. For each unit of the same height, the probability increases by 1.01 times. For each unit increase in width, the probability increases by 1.02 times.
+On the odds scale, the intercept value (0.00006477) gives the probability that the price is greater than 1000 when depth= 0, width=0 and height=0. This is obviously not the feasible range of depth, width and height, so why this value is very close to zero. For depth, there is a probability of 1.05, which means that for each increase in depth by 1 unit, the probability that the furniture price is greater than 1000 increases by 1.06 times. For each unit of the same height, the probability increases by 1.01 times. For each unit increase in width, the probability increases by 1.02 times.
 
 ```{r oddsplots,echo=FALSE, fig.align = "center",fig.cap = "\\label{fig:odds} Odds ratios of three explanatory variables.", fig.pos = 'H', message = FALSE}
 plot_model(final, show.values = TRUE, axis.lim = c(1,1.5),
@@ -187,6 +191,7 @@ ggplot(roc.data, aes(x=fpr, ymin=0, ymax=tpr)) +
 ```
 explain ROC and AUC
 
-# Conclusions and Future Works
-# References
+# Conclusions and Future Work
+
+Since the length, width and height of an item are related to the price, we can consider introducing volume variable which is the product of the three as a variable into the logistic regression model in future work.
 
