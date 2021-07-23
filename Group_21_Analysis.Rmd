@@ -54,7 +54,7 @@ We first took 1000 as a dividing point according to the problem, and added a new
 Table 1 shows that the price of the furniture ranges from 3.0 to 8551.0, with the middle 50% falling between 168.8 and 1245.0 and an average price of 991.1. We can also observe that the middle 50% of depth is between 37.0 and 60.0, with depth of 53.3 on average. Similarly, the middle 50% of height lies between 68.0 and 123.8, with an average value of 102.3. It also shows the mean value of width is 101.1 and the middle 50% falls between 56.0 and 134.2. Besides, we may look at the sellable_online variable is a logical variable, with 499 TRUE values demonstrating that these quantities of items are available to purchase online and 1 FALSE value demonstrating that 1 item is unavailable. In terms of other_colors, it shows that this is a character variable.
 
 # Visualization of the data {#sec:VIS}
-```{r histogram,echo = FALSE, eval = TRUE}
+```{r histogram,echo = FALSE, eval = TRUE,out.width = '70%', fig.pos = 'H', fig.align = "center", fig.cap = "\\label{fig:aggr} Distribution of price levels."}
 Encoding(ikea.sa$category)<-"ASCII"
 ggplot(ikea.sa, aes(x = factor(category), fill = factor(price_level))) +
 geom_bar(stat="count", position = "stack")+
@@ -63,6 +63,7 @@ theme(legend.position = "right") +
     theme(legend.direction = "vertical") +
     theme(axis.text.x = element_text(angle = 90))
 ```
+The above bar graph explains the distribution of price levels across the all categories of the furniture. Tb&d, chrs and B&su have more number of furnitures who are in '0' price level and sf&a has highest numer of furnitures who are in '1' price level.
 ```{r exploratory ,echo = FALSE, eval = TRUE}
 library(plotly)
 
@@ -146,7 +147,7 @@ On the odds scale, the intercept value (0.00006477) gives the probability that t
 plot_model(final, show.values = TRUE, axis.lim = c(1,1.5),
            title = "Odds (price over 1000 furniture)", show.p = FALSE)
 ```
-We can also see the graphic about......(lily)
+We can also see the graphical interpretation of odds ratios of the depth, height, and width which interprets that the per unit of depth, weight, and height is increased by 1.06, 1.01, and 1.02 times respectively. Also, the increase in the probability that price greater than 1000 riyals for per unit of depth is highest than per unit of height and per unit of width and for height it is lowest.  
 
 
 ```{r residplots,echo=FALSE, fig.align = "center",fig.cap = "\\label{fig:resids} Probability of price over 1000 by three different variables.", fig.pos = 'H', message = FALSE}
@@ -171,7 +172,7 @@ grid.arrange(g1,g2,g3,ncol = 2)
 ```
 
 
-lily...
+The above graphs help more clearly to understand the probability of price over 1000 vs individual parameters: depth, height, and weight. According to the probability of price over 1000 vs depth graph depth more than 200 the probability of price over 1000 is constant meanwhile relationship between the probability of price over 1000 and height is moderately linear.
 
 # Goodness of fit
 ```{r ROCplots,echo=FALSE, fig.align = "center",fig.cap = "\\label{fig:ROC} ROC curve.", fig.pos = 'H', message = FALSE}
@@ -189,9 +190,11 @@ ggplot(roc.data, aes(x=fpr, ymin=0, ymax=tpr)) +
     ggtitle(paste0("ROC Curve w/ AUC=", auc))
 
 ```
-explain ROC and AUC
+The Receiver Operator Characteristic (ROC) curve is used for the representation of the binary classification of furniture which takes 1 for a price greater than 1000 riyals otherwise it takes 0. It is a probability curve that plots the TPR against FPR at various threshold values. The Area Under the Curve (AUC) is the measure of separability. As the AUC is 0.91924, we could detect more true positive and true negative values than false negative and false positive values. As AUC is high (close to 1) the performance of the model is also high which results in the high ability of the model to distinguish between positive and negative classes.
 
-# Conclusions and Future Work
+# Conclusions  
+In this analysis, we have analyzed the dimensions of furniture which affect the price of the furniture to check whether it costs more than 1000 Saudi Riyals. To check that we set the dividing point and distributed the furniture according to the price. This binary distribution divided furniture costing more than 1000 into '1' and others into '0'. we observed the odds ratio in which Depth, Height, and Width of these dimensions of the furniture were considered. According to the overall analysis, we observed that the dimensions of the furniture affect the cost of the furniture to be more than 1000 Saudi Riyals. probability of price to be 1000 for Width is higher that means the furniture higher width are more likely to be having cost more than 1000 Riyals meanwhile as the height increases the probability of price over 1000 riyals increases. In the case of depth, the probability of price over 1000 riyals becomes constant after some threshold value. Thus we conclude that the furniture dimensions do influence the cost of fun=rniture to be more than 1000 Riyals.
 
+# Future Work
 Since the length, width and height of an item are related to the price, we can consider introducing volume variable which is the product of the three as a variable into the logistic regression model in future work.
 
