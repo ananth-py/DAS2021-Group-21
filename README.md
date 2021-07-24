@@ -12,9 +12,9 @@ https://ananthp189.github.io/DAS2021-Group-21/
 
 This report has been generated as part of coursework for Data Analytics Skills. The team consists of 5 students who collaborated to create the report and later on presented the analysis.
 
-dataset21.csv               -  contains the ikea data to be loaded.
-Group_21_Analysis.Rmd       -  The R markdown file detailing the analysis
-Group_21_Analysis.pdf       -  The pdf contains knit version of the markdown.
+•dataset21.csv               -  contains the ikea data to be loaded.
+•Group_21_Analysis.Rmd       -  The R markdown file detailing the analysis.
+•Group_21_Analysis.pdf       -  The pdf contains knit version of the markdown.
 
-There is an interactive chart used in the R mark down which cannot be knit as pdf, to explore the chart please visit the url shared above.
+*There is an interactive chart used in the R mark down which cannot be knit as pdf, to explore the chart please visit the url shared above.
 
