@@ -40,7 +40,7 @@ ikea.sa <- read_csv("dataset21.csv")
 ```
 
 # Introduction{#sec:Intro}
-The IKEA store, known for its stylish design and affordable price for young people, has become one of the most popular and recognized furniture retailers in the global marketplace. The company has expanded its global reach very quickly. From Wikipedia, we know that in the early, the first IKEA store in Saudi Arabia opened in 1983 and three stores are opening in this region now. In this study, it is of interest to explore which properties of furniture influence whether they cost more than 1000 Saudi Riyals. We use data from IKEA (Saudi Arabia), including 500 observations and the variables of category, price, sellable_online, other_colors, depth, height and width. In particular, this report further explores the impact level of depth, height and width on the price.
+The IKEA store, known for its stylish design and affordable price for young people, has become one of the most popular and recognized furniture retailers in the global marketplace. The company has expanded its global reach very quickly. According to Wikipedia, the first IKEA store in Saudi Arabia opened in 1983 and three stores are opening in this region now. In this study, it is of interest to explore which properties of furniture influence whether they cost more than 1000 Saudi Riyals. We use data from IKEA (Saudi Arabia), including 500 observations and the variables of category, price, sellable_online, other_colors, depth, height and width. In particular, this report further explores the impact level of depth, height and width on the price.
 
 
 # Exploratory Data Analysis {#sec:EDA}
@@ -50,7 +50,7 @@ summary(ikea.sa[4:10]) %>%
 kable(caption = '\\label{tab:summaries} Summary statistics for observations with chosen variables.') %>%
   kable_styling(latex_options = "hold_position", full_width = F, font_size = 8)
 ```
-We first took 1000 as a dividing point according to the problem, and added a new list of binary variables named price_level. Furniture with a price greater than 1000 takes 1, otherwise it takes 0. Then we performed descriptive statistical analysis based on these selected variables of 500 observations. 
+We first took price of 1000 as a separating factor according to the problem, and added a new list of binary variables named price_level. Furniture with a price greater than 1000 takes on price level 1, otherwise it takes value 0. Then we performed descriptive statistical analysis based on these selected variables of 500 observations. 
 
 Table 1 shows that the price of the furniture ranges from 3.0 to 8551.0, with the middle 50% falling between 168.8 and 1245.0 and an average price of 991.1. We can also observe that the middle 50% of depth is between 37.0 and 60.0, with depth of 53.3 on average. Similarly, the middle 50% of height lies between 68.0 and 123.8, with an average value of 102.3. It also shows the mean value of width is 101.1 and the middle 50% falls between 56.0 and 134.2. Besides, we may look at the sellable_online variable is a logical variable, with 499 TRUE values demonstrating that these quantities of items are available to purchase online and 1 FALSE value demonstrating that 1 item is unavailable. In terms of other_colors, it shows that this is a character variable.
 
@@ -64,7 +64,7 @@ theme(legend.position = "right") +
     theme(legend.direction = "vertical") +
     theme(axis.text.x = element_text(angle = 90))
 ```
-Figure 1 shows the number of furniture based on categories with a price_level 1 (greater than 1000) and 0 (less than 1000). It is obvious that the number of furniture whose price is greater than 1000 is far less than that of furniture whose price is less than 1000 and the prices of furniture in certain categories are all under 1000, such as Cffr, Cod&du, Ch’f and Nrsf. In addition, the largest difference is found in the quantity of B&su costing more than 1000 and less than 1000.
+Figure 1 shows the number of furniture based on categories with a price_level 1 (greater than 1000) and 0 (less than 1000). It is obvious that the number of furniture whose price is greater than 1000 is far less than that of furniture whose price is less than 1000 and the prices of furniture in certain categories are all under 1000, such as Cffr, Cod&du, Ch’f and Nrsf. Additionally, the largest difference is found in the quantity of B&su costing more than 1000 and less than 1000.
 
 ```{r bubbleplot ,echo = FALSE, eval = TRUE,out.width = '70%', fig.pos = 'H', fig.align = "center", fig.cap = "\\label{fig:bubble}Distribution of Furniture Dimensions."}
 fig <- plot_ly(ikea.sa, x = ~width, y = ~height, text = ~category, type = 'scatter', mode = 'markers',color=~category,
@@ -80,7 +80,7 @@ Figure 2 is a bubble chart, each color represents a type of furniture, and each 
 ```{r aggrplot,echo = FALSE, eval = TRUE,out.width = '70%', fig.pos = 'H', fig.align = "center", fig.cap = "\\label{fig:aggr} Missing original data."}
 aggr(ikea.sa)
 ```
-Through the above figure, we found anomalies that there are many missing values and the missing data is mainly concentrated in three explanatory variables, namely depth, length and width. And the three horizontal red squares indicate that these three data are missing at the same time. If we ignore or delete these missing data directly, it will have a great impact on the analysis of the data. So we have to use multiple imputation to fill in missing data.
+Through the above figure, we found anomalies in the data. There were many missing values and the missing data is mainly concentrated in three explanatory variables, namely depth, length and width. And the three horizontal red squares indicate that these three data are missing at the same time. If we ignore or delete these missing data directly, it will have a great impact on the analysis of the data. So we have chosen to use multiple imputation to fill in missing data.
 
 ```{r stripplot,echo = FALSE, eval = TRUE,out.width = '70%', fig.pos = 'H', fig.align = "center", fig.cap = "\\label{fig:strip} Data situation of multiple imputation method."}
 #interpolation for missing values
@@ -90,14 +90,14 @@ imp<-mice(ikea.sa[,3:10],seed=1234)
 ikea<-complete(imp,action = 4)
 ```
 
-According to the picture, we can view the data interpolation. The blue point is the original data, and the red point is the interpolation data. We can see that the two color points are relatively overlapped, indicating that the interpolation is very good.Then we chose the fourth database of multiple imputation for generalized linear model analysis.
+According to the picture, we can view the data interpolation. The blue point is the original data, and the red point is the interpolation data, which have been added in place of the missing values. We can see that the two color points are relatively overlapped, indicating that the interpolation is very good.Then we chose the fourth database of multiple imputation for generalized linear model analysis.
 
 ```{r glm,echo = FALSE, eval = TRUE}
 #fit model
 fit<-glm(price_level~sellable_online+other_colors+depth+height+width,data=ikea,family=binomial(link="logit"))
 summary(fit)
 ```
-We use price_level as the response variable. Because it is a binary variable, so we can use a logistic regression model for the probability of whether the price is greater than 1000. Through the above table, we found that the P values of the two categorical variables(sellable_online and other_colors) are both greater than 0.05, so it means that these two items are not significant in this model, and we need to eliminate these two variables. Next, we use the remaining variables to perform a new modeling.
+We use price_level as the response variable. Because it is a binary variable, so we can use a logistic regression model for the probability of whether the price is greater than 1000. Through the above table, we found that the P values of the two categorical variables(sellable_online and other_colors) are both greater than 0.05, so it means that these two items are not significant in this model, and we need to eliminate these two variables. Next, we use the remaining variables to fit a new general linear model.
 
 $$log({\widehat{\mbox{p}}_{\mbox{i}}\over{1-\widehat{\mbox{p}}_{\mbox{i}}}} )= \widehat{\alpha}+{\widehat\beta}*{\mbox{depth}}_{\mbox{i}}+\widehat{\gamma}*{\mbox{height}}_{\mbox{i}}+\widehat{\delta}*{\mbox{width}}_{\mbox{i}}$$
 
