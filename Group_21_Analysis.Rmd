@@ -32,6 +32,7 @@ library(moderndive)
 library(gapminder)
 library(stats)
 library(gridExtra)
+library(plotly)
 ```
 
 ```{r data, echo = FALSE, eval = TRUE}
@@ -63,10 +64,9 @@ theme(legend.position = "right") +
     theme(legend.direction = "vertical") +
     theme(axis.text.x = element_text(angle = 90))
 ```
-The above bar graph explains the distribution of price levels across the all categories of the furniture. Tb&d, chrs and B&su have more number of furnitures who are in '0' price level and sf&a has highest numer of furnitures who are in '1' price level.
-```{r exploratory ,echo = FALSE, eval = TRUE}
-library(plotly)
+Figure 1 shows the number of furniture based on categories with a price_level 1 (greater than 1000) and 0 (less than 1000). It is obvious that the number of furniture whose price is greater than 1000 is far less than that of furniture whose price is less than 1000 and the prices of furniture in certain categories are all under 1000, such as Cffr, Cod&du, Ch’f and Nrsf. In addition, the largest difference is found in the quantity of B&su costing more than 1000 and less than 1000.
 
+```{r bubbleplot ,echo = FALSE, eval = TRUE,out.width = '70%', fig.pos = 'H', fig.align = "center", fig.cap = "\\label{fig:bubble}Distribution of Furniture Dimensions."}
 fig <- plot_ly(ikea.sa, x = ~width, y = ~height, text = ~category, type = 'scatter', mode = 'markers',color=~category,
         marker = list(size = ~depth/10, opacity = 0.5))
 fig <- fig %>% layout(title = 'Distribution of Furniture Dimensions',
@@ -74,7 +74,7 @@ fig <- fig %>% layout(title = 'Distribution of Furniture Dimensions',
          yaxis = list(showgrid = FALSE))
 fig
 ```
-Figure 1 shows the number of furniture based on categories with a price_level 1 (greater than 1000) and 0 (less than 1000). It is obvious that the number of furniture whose price is greater than 1000 is far less than that of furniture whose price is less than 1000 and the prices of furniture in certain categories are all under 1000, such as Cffr, Cod&du, Ch’f and Nrsf. In addition, the largest difference is found in the quantity of B&su costing more than 1000 and less than 1000.
+Figure 2 is a bubble chart, each color represents a type of furniture, and each circle of different sizes represents the height and width of each piece of furniture. It is very intuitive and clear to show that the height and width of different furniture are very different, and the same type of furniture also has many different heights and widths. For example, there are many choices for the types of bookshelves, and their height and width are scattered in various places on the coordinate axis. However, the height and width of the chair are relatively concentrated, and most of them are located in the lower left corner of the coordinate axis, which means that the width and height are relatively small, which is also in line with reality.
 
 # Formal Data Analysis {#sec:FDA}
 ```{r aggrplot,echo = FALSE, eval = TRUE,out.width = '70%', fig.pos = 'H', fig.align = "center", fig.cap = "\\label{fig:aggr} Missing original data."}
@@ -132,7 +132,7 @@ confint(final) %>%
   kable(caption = '\\label{tab:CI} The confidence interval of variables.') %>%
   kable_styling(latex_options = "hold_position")
 ```
-Table 2 shows the 95% confidence interval for these log-odds, with intercept being of (-8.71, -6.61), depth being of (0.03, 0.06), height being of (0.007, 0.017) and width being of (0.02, 0.03).
+Table 2 shows the 95% confidence interval for these log-odds, with intercept being of (-8.71, -6.61), depth being of (0.03, 0.06), height being of (0.007, 0.017) and width being of (0.02, 0.03).All intervals do not contain 0, which once again confirms that these three variables are significant in the model.
 
 ```{r,echo = FALSE, eval = TRUE}
 final %>%
@@ -172,7 +172,7 @@ grid.arrange(g1,g2,g3,ncol = 2)
 ```
 
 
-The above graphs help more clearly to understand the probability of price over 1000 vs individual parameters: depth, height, and weight. According to the probability of price over 1000 vs depth graph depth more than 200 the probability of price over 1000 is constant meanwhile relationship between the probability of price over 1000 and height is moderately linear.
+The above graphs helps to understand more clearly how the probability of a price exceeding 1000 varies with a single parameter: depth, height, and weight. When the depth exceeds 200, the probability that the price is greater than 1000 is the highest and gradually stabilizes, and similarly, when the width exceeds 300, the probability that the price exceeds 1000 is constant. At the same time, the relationship between the probability of the price exceeding 1000 and the height is approximately linear and positively correlated.
 
 # Goodness of fit
 ```{r ROCplots,echo=FALSE, fig.align = "center",fig.cap = "\\label{fig:ROC} ROC curve.", fig.pos = 'H', message = FALSE}
@@ -193,7 +193,7 @@ ggplot(roc.data, aes(x=fpr, ymin=0, ymax=tpr)) +
 The Receiver Operator Characteristic (ROC) curve is used for the representation of the binary classification of furniture which takes 1 for a price greater than 1000 riyals otherwise it takes 0. It is a probability curve that plots the TPR against FPR at various threshold values. The Area Under the Curve (AUC) is the measure of separability. As the AUC is 0.91924, we could detect more true positive and true negative values than false negative and false positive values. As AUC is high (close to 1) the performance of the model is also high which results in the high ability of the model to distinguish between positive and negative classes.
 
 # Conclusions  
-In this analysis, we have analyzed the dimensions of furniture which affect the price of the furniture to check whether it costs more than 1000 Saudi Riyals. To check that we set the dividing point and distributed the furniture according to the price. This binary distribution divided furniture costing more than 1000 into '1' and others into '0'. we observed the odds ratio in which Depth, Height, and Width of these dimensions of the furniture were considered. According to the overall analysis, we observed that the dimensions of the furniture affect the cost of the furniture to be more than 1000 Saudi Riyals. probability of price to be 1000 for Width is higher that means the furniture higher width are more likely to be having cost more than 1000 Riyals meanwhile as the height increases the probability of price over 1000 riyals increases. In the case of depth, the probability of price over 1000 riyals becomes constant after some threshold value. Thus we conclude that the furniture dimensions do influence the cost of fun=rniture to be more than 1000 Riyals.
+In this analysis, we have analyzed the dimensions of furniture which affect the price of the furniture to check whether it costs more than 1000 Saudi Riyals. To check that we set the dividing point and distributed the furniture according to the price. This binary distribution divided furniture costing more than 1000 into '1' and others into '0'.Since the original data has many missing values, we used multiple imputation method to fill in the data, and use the filled data for analysis and modeling. According to whether the variables were significantly selected in the model, the three variables of width, depth and height were selected to create the final model and test the goodness of fit. We observed the odds ratio in which Depth, Height, and Width of these dimensions of the furniture were considered. According to the overall analysis, we observed that the dimensions of the furniture affect the cost of the furniture to be more than 1000 Saudi Riyals. probability of price to be 1000 for Width is higher that means the furniture higher width are more likely to be having cost more than 1000 Riyals meanwhile as the height increases the probability of price over 1000 riyals increases. In the case of depth, the probability of price over 1000 riyals becomes constant after some threshold value. Thus we conclude that the furniture dimensions do influence the cost of fun=rniture to be more than 1000 Riyals.
 
 # Future Work
 Since the length, width and height of an item are related to the price, we can consider introducing volume variable which is the product of the three as a variable into the logistic regression model in future work.
