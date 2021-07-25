@@ -67,6 +67,7 @@ theme(legend.position = "right") +
 Figure 1 shows the number of furniture based on categories with a price_level 1 (greater than 1000) and 0 (less than 1000). It is obvious that the number of furniture whose price is greater than 1000 is far less than that of furniture whose price is less than 1000 and the prices of furniture in certain categories are all under 1000, such as Cffr, Cod&du, Ch’f and Nrsf. Additionally, the largest difference is found in the quantity of B&su costing more than 1000 and less than 1000.
 
 ```{r bubbleplot ,echo = FALSE, eval = TRUE,out.width = '70%', fig.pos = 'H', fig.align = "center", fig.cap = "\\label{fig:bubble}Distribution of Furniture Dimensions."}
+Sys.setlocale('LC_ALL','C') #for the mac
 fig <- plot_ly(ikea.sa, x = ~width, y = ~height, text = ~category, type = 'scatter', mode = 'markers',color=~category,
         marker = list(size = ~depth/10, opacity = 0.5))
 fig <- fig %>% layout(title = 'Distribution of Furniture Dimensions',
