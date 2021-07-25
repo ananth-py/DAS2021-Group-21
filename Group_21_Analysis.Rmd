@@ -203,3 +203,4 @@ We observed the odds ratio in which Depth, Height, and Width of these dimensions
 # Future Work
 Since the length, width and height of an item are related to the price, we can consider introducing volume variable which is the product of the three as a variable into the logistic regression model in future work.
 
+We can consider dividing the data into three categories, namely train, validation, and test. The train is used to fit the classification model. Validation is used to select the model with the best performance. Finally, test the best model with the test, so that you can see more clearly Find out whether the model can be used in practice.
